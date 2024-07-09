@@ -38,6 +38,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [globalFilter, setGlobalFilter] = useState<string>("")
   const [columnVisibility, setColumnVisibility] =
     useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
@@ -53,9 +54,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
       columnFilters,
+      globalFilter,
       columnVisibility,
       rowSelection,
     },
@@ -65,6 +68,12 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     <div>
       <div className="flex justify-between items-center gap-3">
         <div className='flex gap-2'>
+          <Input
+            placeholder='Filter Globally...'
+            value={globalFilter}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            className='max-w-sm'
+          />
           <Input
             placeholder="Filter First Name..."
             value={(table.getColumn("first_name")?.getFilterValue() as string) ?? ""}
